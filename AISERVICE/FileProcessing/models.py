@@ -3,14 +3,23 @@ from projects.models import Project
 # Create your models here.
 
 class Document(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='documents')
-    title = models.CharField(max_length=255)
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('processing', 'Processing'),
+        ('ready', 'Ready'),
+        ('error', 'Error'),
+    ]
+
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="documents")
     file = models.FileField(upload_to='documents/')
+    original_filename = models.CharField(max_length=255)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    error_message = models.TextField(blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    processed = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.title
+        return self.original_filename
+
 
 
 class Chunk(models.Model):
