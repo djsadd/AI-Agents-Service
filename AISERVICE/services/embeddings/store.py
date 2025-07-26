@@ -1,22 +1,19 @@
-from sentence_transformers import SentenceTransformer
+import openai
 from qdrant_client import QdrantClient
-from qdrant_client.http.models import SearchRequest, Filter, PointStruct
-from qdrant_client.models import Distance, VectorParams
-import numpy as np
+from django.conf import settings
+# Установи свой OpenAI API ключ через переменную окружения или здесь:
+openai.api_key = settings.OPENAI_API_KEY
 
-# Загружаем модель (если используется SentenceTransformer)
-embedding_model = SentenceTransformer("BAAI/bge-base-en-v1.5")
-
-# Подключаемся к Qdrant
-client = QdrantClient(host="localhost", port=6333)  # проверь порт!
-
-# Название коллекции, которую ты заранее создал
+client = QdrantClient(host="localhost", port=6333)
 COLLECTION_NAME = "my_collection"
 
 
-def get_embedding(text: str) -> list[float]:
-    embedding = embedding_model.encode(text, normalize_embeddings=True)
-    return embedding.tolist()
+def get_embedding(text: str, model: str = "text-embedding-3-small") -> list[float]:
+    response = openai.embeddings.create(
+        input=text,
+        model=model
+    )
+    return response.data[0].embedding
 
 
 def get_best_match(question: str):
@@ -29,6 +26,6 @@ def get_best_match(question: str):
     )
 
     if hits:
-        return hits[0].payload  # или hits[0].payload["text"], зависит от структуры
+        return hits[0].payload  # например, {"text": "...", "file_id": "..."}
     else:
         return "❌ No results found."

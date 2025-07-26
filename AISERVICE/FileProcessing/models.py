@@ -37,29 +37,36 @@ class Document(models.Model):
             self.save()
 
             # 1. Извлечение текста
+            print("Извлечение текста")
             text = extract_text(self.file.path)
             if not text.strip():
                 raise ValueError("Извлечён пустой текст")
 
             # 2. Разделение на чанки
+            print("Разделение на чанки")
             chunks = split_text(text)
 
             # 3. Сохранение чанков
+            print("Сохранение чанков")
             chunk_objs = []
             for idx, chunk_text in enumerate(chunks):
                 chunk_objs.append(Chunk(document=self, text=chunk_text, chunk_index=idx))
             Chunk.objects.bulk_create(chunk_objs)
 
             # 4. Эмбеддинги
+            print("Эмбеддинги")
             created_chunks = self.chunks.order_by("chunk_index").all()
             chunk_texts = [ch.text for ch in created_chunks]
             embeddings = get_embeddings(chunk_texts)
 
             # 5. Сохранение эмбеддингов
+            print("Сохранение эмбеддингов")
             for chunk, vector in zip(created_chunks, embeddings):
-                Embedding.objects.create(chunk=chunk, vector=vector.tolist())
+                Embedding.objects.create(chunk=chunk, vector=vector)
 
             # 6. Загрузка в Qdrant
+            print("Загрузка в Qdrant")
+
             upload_to_qdrant(embeddings, chunk_texts, file_id=str(self.id))
 
             self.status = 'ready'
