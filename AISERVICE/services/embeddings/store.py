@@ -19,9 +19,6 @@ def get_embedding(text: str) -> list[float]:
 
 
 def get_best_match(question: str):
-    """
-    Выполняет поиск ближайшего совпадения в Qdrant по смыслу.
-    """
     vector = get_embedding(question)
 
     hits = client.search(
@@ -31,6 +28,6 @@ def get_best_match(question: str):
     )
 
     if hits:
-        return hits[0].payload  # например, {"text": "...", "file_id": "..."}
+        return hits[0].payload  # {"text": "...", "file_id": "..."}
     else:
-        return "❌ No results found."
+        return None

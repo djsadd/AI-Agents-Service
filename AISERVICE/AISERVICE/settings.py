@@ -32,6 +32,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+GROQ_API_KEY = env("GROQ_API_KEY")
 # Application definition
 
 INSTALLED_APPS = [

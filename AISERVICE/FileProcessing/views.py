@@ -7,9 +7,10 @@ from django.views import View
 from django.contrib import messages
 from django.shortcuts import render
 from services.embeddings.store import get_best_match
-
 from .models import Document
 from projects.models import Project
+
+from llm.views import ask_groq
 
 
 class DocumentUploadView(View):
@@ -40,15 +41,25 @@ class DocumentUploadView(View):
 
         return redirect(request.path)
 
-
 def ask_question_view(request):
     context = {}
 
     if request.method == 'POST':
         question = request.POST.get('question')
         if question:
-            best_answer = get_best_match(question)
-            context['question'] = question
-            context['answer'] = best_answer
+            best_match = get_best_match(question)
+
+            if best_match and "text" in best_match:
+                retrieved_context = best_match["text"]
+
+                # ❗ Вот здесь вызывается твоя функция
+                llm_answer = ask_groq(retrieved_context, question)
+
+                context['question'] = question
+                context['answer'] = llm_answer
+                context['retrieved_context'] = retrieved_context
+                context['source'] = best_match.get('file_id', 'N/A')  # если хочешь
+            else:
+                context['answer'] = "❌ Ничего не найдено в базе знаний."
 
     return render(request, 'fileprocessing/ask.html', context)
