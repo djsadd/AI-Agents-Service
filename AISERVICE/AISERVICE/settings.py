@@ -90,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'aiservice',
         'USER': 'postgres',
-        'PASSWORD': '1234',
+        'PASSWORD': env("DB_PASSWORD"),
         'HOST': 'localhost',
         'PORT': env("DB_PORT"),
     }
