@@ -29,7 +29,6 @@ class Document(models.Model):
         return self.original_filename
 
     def process(self):
-        from .models import Chunk, Embedding  # локальный импорт если нужно
 
         try:
             print(f"📄 Обработка документа: {self.original_filename}")
@@ -52,7 +51,7 @@ class Document(models.Model):
             for idx, chunk_text in enumerate(chunks):
                 chunk_objs.append(Chunk(document=self, text=chunk_text, chunk_index=idx))
             Chunk.objects.bulk_create(chunk_objs)
-
+            print(chunk_objs)
             # 4. Эмбеддинги
             print("Эмбеддинги")
             created_chunks = self.chunks.order_by("chunk_index").all()

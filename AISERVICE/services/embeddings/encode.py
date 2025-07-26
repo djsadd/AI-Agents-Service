@@ -1,16 +1,10 @@
 from .model import model
 from typing import List
-import openai
-from django.conf import settings
 
-openai.api_key = settings.OPENAI_API_KEY
 
-def get_embeddings(texts: List[str], model=model):
+def get_embeddings(texts: List[str]) -> List[List[float]]:
     """
-    Возвращает список эмбеддингов для списка текстов через OpenAI API.
+    Возвращает список эмбеддингов для списка текстов через локальную модель e5-small-v2.
+    Важно: добавляй префиксы "query:" или "passage:" в зависимости от задачи.
     """
-    response = openai.Embedding.create(
-        input=texts,
-        model=model
-    )
-    return [item.embedding for item in response.data]
+    return model.encode(texts, convert_to_numpy=True).tolist()
