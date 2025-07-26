@@ -87,6 +87,7 @@ local_settings.py
 
 AISERVICE/.env
 db.sqlite3
-.documents/".idea/" 
-.env
+.documents/
+".idea/"
+AISERVICE/.env
 .idea
