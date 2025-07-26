@@ -2,7 +2,7 @@ import requests
 
 QDRANT_URL = "http://localhost:6333"
 COLLECTION_NAME = "my_collection"
-VECTOR_SIZE = 384
+VECTOR_SIZE = 768
 
 
 def ensure_qdrant_collection():

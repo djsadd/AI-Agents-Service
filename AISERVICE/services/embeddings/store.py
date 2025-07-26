@@ -1,9 +1,8 @@
 from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
 from django.conf import settings
-
+from .model import model
 # Загружаем локальную модель один раз
-model = SentenceTransformer("intfloat/multilingual-e5-small")
 
 # Настройки Qdrant
 client = QdrantClient(host="localhost", port=6333)
