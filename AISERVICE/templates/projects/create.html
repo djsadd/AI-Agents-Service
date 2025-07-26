@@ -1,0 +1,23 @@
+
+{% block content %}
+  <h2>Создание нового проекта</h2>
+
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <label for="name">Название проекта:</label><br>
+    <input type="text" name="name" required><br><br>
+
+    <label for="description">Описание (необязательно):</label><br>
+    <textarea name="description" rows="4"></textarea><br><br>
+
+    <button type="submit">Создать проект</button>
+  </form>
+{% endblock %}

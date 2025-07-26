@@ -1,6 +1,14 @@
 from django.db import models
 from projects.models import Project
+from django.contrib.postgres.fields import ArrayField
+
+from services.utils.extract import extract_text
+from services.utils.splitter import split_text
+from services.embeddings.encode import get_embeddings
+from services.qdrant.uploader import upload_to_qdrant
+
 # Create your models here.
+
 
 class Document(models.Model):
     STATUS_CHOICES = [
@@ -20,6 +28,55 @@ class Document(models.Model):
     def __str__(self):
         return self.original_filename
 
+    def process(self):
+
+        try:
+            print(f"📄 Обработка документа: {self.original_filename}")
+            self.status = 'processing'
+            self.save()
+
+            # 1. Извлечение текста
+            print("Извлечение текста")
+            text = extract_text(self.file.path)
+            if not text.strip():
+                raise ValueError("Извлечён пустой текст")
+
+            # 2. Разделение на чанки
+            print("Разделение на чанки")
+            chunks = split_text(text)
+
+            # 3. Сохранение чанков
+            print("Сохранение чанков")
+            chunk_objs = []
+            for idx, chunk_text in enumerate(chunks):
+                chunk_objs.append(Chunk(document=self, text=chunk_text, chunk_index=idx))
+            Chunk.objects.bulk_create(chunk_objs)
+            print(chunk_objs)
+            # 4. Эмбеддинги
+            print("Эмбеддинги")
+            created_chunks = self.chunks.order_by("chunk_index").all()
+            chunk_texts = [ch.text for ch in created_chunks]
+            embeddings = get_embeddings(chunk_texts)
+
+            # 5. Сохранение эмбеддингов
+            print("Сохранение эмбеддингов")
+            for chunk, vector in zip(created_chunks, embeddings):
+                Embedding.objects.create(chunk=chunk, vector=vector)
+
+            # 6. Загрузка в Qdrant
+            print("Загрузка в Qdrant")
+
+            upload_to_qdrant(embeddings, chunk_texts, file_id=str(self.id))
+
+            self.status = 'ready'
+            self.error_message = ''
+            self.save()
+            print("✅ Документ успешно обработан.")
+        except Exception as e:
+            self.status = 'error'
+            self.error_message = str(e)
+            self.save()
+            print(f"❌ Ошибка при обработке документа: {e}")
 
 
 class Chunk(models.Model):
@@ -28,10 +85,8 @@ class Chunk(models.Model):
     chunk_index = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"Chunk {self.chunk_index} of {self.document.title}"
+        return f"Chunk {self.chunk_index} of {self.document.original_filename}"
 
-
-from django.contrib.postgres.fields import ArrayField
 
 class Embedding(models.Model):
     chunk = models.OneToOneField(Chunk, on_delete=models.CASCADE, related_name='embedding')

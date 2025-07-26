@@ -1,0 +1,13 @@
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="question" placeholder="Enter your question" required size="60">
+    <button type="submit">Ask</button>
+</form>
+
+{% if question %}
+    <hr>
+    <h3>Your question:</h3>
+    <p>{{ question }}</p>
+    <h3>Answer:</h3>
+    <p>{{ answer }}</p>
+{% endif %}
