@@ -6,28 +6,26 @@ from .model import model
 
 # Настройки Qdrant
 client = QdrantClient(host="localhost", port=6333)
-COLLECTION_NAME = "my_collection"
+COLLECTION_NAME = "rag_chunks"
+from .encode import get_embeddings
+from qdrant_client.http import models as rest
 
-
-def get_embedding(text: str) -> list[float]:
-    """
-    Получить эмбеддинг для текста с помощью локальной модели e5-small-v2.
-    Важно: добавь префикс "query:".
-    """
-    embedding = model.encode(f"query: {text}", convert_to_numpy=True)
-    return embedding.tolist()
-
-
-def get_best_match(question: str):
-    vector = get_embedding(question)
+def get_best_match(question: str, project_id: int):
+    vector = get_embeddings([question], mode="query")[0]  # ВАЖНО: берем [0]
 
     hits = client.search(
         collection_name=COLLECTION_NAME,
-        query_vector=vector,
-        limit=1
+        query_vector=vector,  # не список списков, а один список чисел
+        limit=3,
+        query_filter=rest.Filter(
+            must=[
+                rest.FieldCondition(
+                    key="project_id",
+                    match=rest.MatchValue(value=project_id)
+                )
+            ]
+        ),
+        with_payload=True
     )
 
-    if hits:
-        return hits[0].payload  # {"text": "...", "file_id": "..."}
-    else:
-        return None
+    return hits[0].payload if hits else None

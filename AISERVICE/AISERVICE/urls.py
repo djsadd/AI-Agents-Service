@@ -23,4 +23,5 @@ urlpatterns = [
     path("users/", include("users.urls")),
     path("files/", include("FileProcessing.urls")),
     path("projects/", include("projects.urls")),
+    path("", include("llm.urls")),
 ]

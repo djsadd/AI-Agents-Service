@@ -66,7 +66,7 @@ class Document(models.Model):
             # 6. Загрузка в Qdrant
             print("Загрузка в Qdrant")
 
-            upload_to_qdrant(embeddings, chunk_texts, file_id=str(self.id))
+            upload_to_qdrant(embeddings, chunk_texts, file_id=str(self.id), project_id=self.project.id)
 
             self.status = 'ready'
             self.error_message = ''

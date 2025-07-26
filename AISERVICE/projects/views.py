@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
-
+from django.views.generic import ListView
 from .models import Project
 
 
@@ -29,3 +29,8 @@ class ProjectCreateView(View):
 
         messages.success(request, f"Проект «{project.name}» успешно создан.")
         return redirect('document_upload', project_id=project.id)  # ← после создания переходим к загрузке
+
+
+class ProjectsListView(ListView):
+    model = Project
+    template_name = "projects/list.html"

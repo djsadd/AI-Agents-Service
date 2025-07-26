@@ -1,0 +1,11 @@
+{% block content %}
+
+{% for project in object_list %}
+
+    <p>{{ project.name }} -
+        <a href="{% url 'ask-question' project.pk %}">Опробовать!</a>
+        или
+        <a href="{% url 'document_upload' project.pk %}">Загрузить документы</a></p>
+
+{% endfor %}
+{% endblock %}

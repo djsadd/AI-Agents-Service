@@ -1,7 +1,7 @@
 import requests
 
 QDRANT_URL = "http://localhost:6333"
-COLLECTION_NAME = "my_collection"
+COLLECTION_NAME = "rag_chunks"
 VECTOR_SIZE = 768
 
 

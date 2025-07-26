@@ -3,7 +3,7 @@ import requests
 from .client import QDRANT_URL, COLLECTION_NAME, ensure_qdrant_collection
 
 
-def upload_to_qdrant(embeddings, texts, file_id):
+def upload_to_qdrant(embeddings, texts, file_id, project_id):
     if len(embeddings) != len(texts):
         raise ValueError(f"Длина embeddings ({len(embeddings)}) не равна длине texts ({len(texts)})")
 
@@ -18,7 +18,8 @@ def upload_to_qdrant(embeddings, texts, file_id):
             "vector": vector,
             "payload": {
                 "text": text,
-                "file_id": file_id
+                "file_id": file_id,
+                "project_id": project_id
             }
         })
 
