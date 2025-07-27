@@ -34,3 +34,6 @@ class ProjectCreateView(View):
 class ProjectsListView(ListView):
     model = Project
     template_name = "projects/list.html"
+
+    def get_queryset(self):
+        return Project.objects.filter(owner=self.request.user)

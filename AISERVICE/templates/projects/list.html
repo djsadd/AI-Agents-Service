@@ -6,6 +6,7 @@
         <a href="{% url 'ask-question' project.pk %}">Опробовать!</a>
         или
         <a href="{% url 'document_upload' project.pk %}">Загрузить документы</a></p>
-
 {% endfor %}
+<a href="{% url 'project_create' %}"><p>Создать новый проект?</p></a>
+
 {% endblock %}
