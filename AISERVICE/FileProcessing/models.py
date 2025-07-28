@@ -27,12 +27,24 @@ class Document(models.Model):
 
     def process(self):
         api_url = "http://localhost:8001/api/process_document/"
-        response = requests.post(api_url, json={"document": self.document})
 
-        if response.status_code == 200:
-            print("📤 Обработка запущена во втором сервисе")
-        else:
-            print(f"❌ Ошибка запуска обработки: {response.text}")
+        try:
+            with open(self.file.path, 'rb') as f:
+                files = {'file': (self.original_filename, f)}
+                data = {
+                    'document_id': self.id,
+                    'project_id': self.project.id,
+                    'original_filename': self.original_filename,
+                }
+                response = requests.post(api_url, files=files, data=data)
+
+            if response.status_code == 200:
+                print("📤 Обработка запущена во втором сервисе")
+            else:
+                print(f"❌ Ошибка запуска обработки: {response.status_code}, {response.text}")
+
+        except Exception as e:
+            print(f"❌ Ошибка при попытке отправить файл: {e}")
 
 
 
