@@ -2,12 +2,9 @@ from django.db import models
 from projects.models import Project
 from django.contrib.postgres.fields import ArrayField
 
-from services.utils.extract import extract_text
-from services.utils.splitter import split_text
-from services.embeddings.encode import get_embeddings
-from services.qdrant.uploader import upload_to_qdrant
 
 # Create your models here.
+import requests
 
 
 class Document(models.Model):
@@ -29,54 +26,14 @@ class Document(models.Model):
         return self.original_filename
 
     def process(self):
+        api_url = "http://localhost:8001/api/process_document/"
+        response = requests.post(api_url, json={"document": self.document})
 
-        try:
-            print(f"📄 Обработка документа: {self.original_filename}")
-            self.status = 'processing'
-            self.save()
+        if response.status_code == 200:
+            print("📤 Обработка запущена во втором сервисе")
+        else:
+            print(f"❌ Ошибка запуска обработки: {response.text}")
 
-            # 1. Извлечение текста
-            print("Извлечение текста")
-            text = extract_text(self.file.path)
-            if not text.strip():
-                raise ValueError("Извлечён пустой текст")
-
-            # 2. Разделение на чанки
-            print("Разделение на чанки")
-            chunks = split_text(text)
-
-            # 3. Сохранение чанков
-            print("Сохранение чанков")
-            chunk_objs = []
-            for idx, chunk_text in enumerate(chunks):
-                chunk_objs.append(Chunk(document=self, text=chunk_text, chunk_index=idx))
-            Chunk.objects.bulk_create(chunk_objs)
-            print(chunk_objs)
-            # 4. Эмбеддинги
-            print("Эмбеддинги")
-            created_chunks = self.chunks.order_by("chunk_index").all()
-            chunk_texts = [ch.text for ch in created_chunks]
-            embeddings = get_embeddings(chunk_texts)
-
-            # 5. Сохранение эмбеддингов
-            print("Сохранение эмбеддингов")
-            for chunk, vector in zip(created_chunks, embeddings):
-                Embedding.objects.create(chunk=chunk, vector=vector)
-
-            # 6. Загрузка в Qdrant
-            print("Загрузка в Qdrant")
-
-            upload_to_qdrant(embeddings, chunk_texts, file_id=str(self.id), project_id=self.project.id)
-
-            self.status = 'ready'
-            self.error_message = ''
-            self.save()
-            print("✅ Документ успешно обработан.")
-        except Exception as e:
-            self.status = 'error'
-            self.error_message = str(e)
-            self.save()
-            print(f"❌ Ошибка при обработке документа: {e}")
 
 
 class Chunk(models.Model):

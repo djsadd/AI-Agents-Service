@@ -1,0 +1,281 @@
+Структура папок
+Серийный номер тома: F0C5-685C
+C:.
+|   .env
+|   db.sqlite3
+|   manage.py
+|   requirements.txt
+|   tree.txt
+|   Как улучшить результаты.docx
+|   реализация quadrant.docx
+|   
++---AISERVICE
+|   |   asgi.py
+|   |   settings.py
+|   |   urls.py
+|   |   wsgi.py
+|   |   __init__.py
+|   |   
+|   \---__pycache__
+|           settings.cpython-312.pyc
+|           urls.cpython-312.pyc
+|           wsgi.cpython-312.pyc
+|           __init__.cpython-312.pyc
+|           
++---analytics
+|   |   admin.py
+|   |   apps.py
+|   |   models.py
+|   |   tests.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   +---migrations
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           __init__.cpython-312.pyc
+|   |           
+|   \---__pycache__
+|           admin.cpython-312.pyc
+|           apps.cpython-312.pyc
+|           models.cpython-312.pyc
+|           __init__.cpython-312.pyc
+|           
++---documents
+|       Договор.docx
+|       Договор_KGQNSvU.docx
+|       Договор_XCig5H2.docx
+|       Необходимые_документы_бакалавр_после_колледжа.docx
+|       Необходимые_документы_бакалавр_после_колледжа_I7FSwnd.docx
+|       Необходимые_документы_бакалавр_после_школы.docx
+|       общежитие.docx
+|       прайс.txt
+|       Проходные_баллы_ЕНТ_Бакалавриат.docx
+|       Проходные_баллы_ЕНТ_Бакалавриат_BFyrWya.docx
+|       Рассылка.docx
+|       Цены.docx
+|       
++---FileProcessing
+|   |   admin.py
+|   |   apps.py
+|   |   models.py
+|   |   tests.py
+|   |   urls.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   +---migrations
+|   |   |   0001_initial.py
+|   |   |   0002_initial.py
+|   |   |   0003_rename_title_document_original_filename_and_more.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           0001_initial.cpython-312.pyc
+|   |           0002_initial.cpython-312.pyc
+|   |           0003_rename_title_document_original_filename_and_more.cpython-312.pyc
+|   |           __init__.cpython-312.pyc
+|   |           
+|   \---__pycache__
+|           admin.cpython-312.pyc
+|           apps.cpython-312.pyc
+|           models.cpython-312.pyc
+|           urls.cpython-312.pyc
+|           views.cpython-312.pyc
+|           __init__.cpython-312.pyc
+|           
++---llm
+|   |   admin.py
+|   |   apps.py
+|   |   models.py
+|   |   tests.py
+|   |   urls.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   +---migrations
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           __init__.cpython-312.pyc
+|   |           
+|   \---__pycache__
+|           admin.cpython-312.pyc
+|           apps.cpython-312.pyc
+|           models.cpython-312.pyc
+|           urls.cpython-312.pyc
+|           views.cpython-312.pyc
+|           __init__.cpython-312.pyc
+|           
++---logs
+|   |   admin.py
+|   |   apps.py
+|   |   models.py
+|   |   tests.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   +---migrations
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           __init__.cpython-312.pyc
+|   |           
+|   \---__pycache__
+|           admin.cpython-312.pyc
+|           apps.cpython-312.pyc
+|           models.cpython-312.pyc
+|           __init__.cpython-312.pyc
+|           
++---projects
+|   |   admin.py
+|   |   apps.py
+|   |   models.py
+|   |   tests.py
+|   |   urls.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   +---migrations
+|   |   |   0001_initial.py
+|   |   |   0002_initial.py
+|   |   |   0003_integration.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           0001_initial.cpython-312.pyc
+|   |           0002_initial.cpython-312.pyc
+|   |           0003_integration.cpython-312.pyc
+|   |           __init__.cpython-312.pyc
+|   |           
+|   \---__pycache__
+|           admin.cpython-312.pyc
+|           apps.cpython-312.pyc
+|           models.cpython-312.pyc
+|           urls.cpython-312.pyc
+|           views.cpython-312.pyc
+|           __init__.cpython-312.pyc
+|           
++---rag
+|   |   admin.py
+|   |   apps.py
+|   |   models.py
+|   |   tests.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   +---migrations
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           __init__.cpython-312.pyc
+|   |           
+|   \---__pycache__
+|           admin.cpython-312.pyc
+|           apps.cpython-312.pyc
+|           models.cpython-312.pyc
+|           __init__.cpython-312.pyc
+|           
++---rag_service
+|   |   .env
+|   |   __init__.py
+|   |   
+|   \---app
+|       |   config.py
+|       |   crud.py
+|       |   db.py
+|       |   main.py
+|       |   models.py
+|       |   rag.py
+|       |   schemas.py
+|       |   __init__.py
+|       |   
+|       +---services
+|       |   |   __init__.py
+|       |   |   
+|       |   +---embeddings
+|       |   |   |   encode.py
+|       |   |   |   model.py
+|       |   |   |   store.py
+|       |   |   |   __init__.py
+|       |   |   |   
+|       |   |   \---__pycache__
+|       |   |           encode.cpython-312.pyc
+|       |   |           model.cpython-312.pyc
+|       |   |           __init__.cpython-312.pyc
+|       |   |           
+|       |   +---qdrant
+|       |   |   |   client.py
+|       |   |   |   uploader.py
+|       |   |   |   __init__.py
+|       |   |   |   
+|       |   |   \---__pycache__
+|       |   |           client.cpython-312.pyc
+|       |   |           uploader.cpython-312.pyc
+|       |   |           __init__.cpython-312.pyc
+|       |   |           
+|       |   +---tests
+|       |   |       pipeline_test.py
+|       |   |       __init__.py
+|       |   |       
+|       |   +---utils
+|       |   |   |   extract.py
+|       |   |   |   splitter.py
+|       |   |   |   __init__.py
+|       |   |   |   
+|       |   |   \---__pycache__
+|       |   |           extract.cpython-312.pyc
+|       |   |           splitter.cpython-312.pyc
+|       |   |           __init__.cpython-312.pyc
+|       |   |           
+|       |   \---__pycache__
+|       |           __init__.cpython-312.pyc
+|       |           
+|       \---__pycache__
+|               db.cpython-312.pyc
+|               main.cpython-312.pyc
+|               models.cpython-312.pyc
+|               rag.cpython-312.pyc
+|               __init__.cpython-312.pyc
+|               
++---templates
+|   +---fileprocessing
+|   |       ask.html
+|   |       upload.html
+|   |       
+|   +---projects
+|   |       create.html
+|   |       list.html
+|   |       
+|   \---users
+|           home.html
+|           login.html
+|           register.html
+|           
++---tests files
+|       test.docx
+|       
+\---users
+    |   admin.py
+    |   apps.py
+    |   models.py
+    |   tests.py
+    |   urls.py
+    |   views.py
+    |   
+    +---migrations
+    |   |   0001_initial.py
+    |   |   __init__.py
+    |   |   
+    |   \---__pycache__
+    |           0001_initial.cpython-312.pyc
+    |           __init__.cpython-312.pyc
+    |           
+    \---__pycache__
+            admin.cpython-312.pyc
+            apps.cpython-312.pyc
+            models.cpython-312.pyc
+            urls.cpython-312.pyc
+            views.cpython-312.pyc
+            
