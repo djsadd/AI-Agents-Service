@@ -45,6 +45,37 @@ def ask_question_view(request, project_pk):
     return render(request, 'fileprocessing/ask.html', context)
 
 
+def ask_question_telegram_view(request, question, project_pk):
+    context = {}
+    if question:
+        # best_match = get_best_match(question, project_pk)
+        api_url = "http://localhost:8001/api/get_best_match/"
+        data = {
+            'question': question,
+            'project_pk': project_pk,
+        }
+        response = requests.post(api_url, data=data)
+        json_data = response.json()
+
+        best_match = json_data.get("result")
+
+        if best_match and "text" in best_match:
+            retrieved_context = best_match["text"]
+            # ❗ Вот здесь вызывается твоя функция
+            llm_answer = ask_groq(retrieved_context, question)
+
+            context['question'] = question
+            context['answer'] = llm_answer
+            context['retrieved_context'] = retrieved_context
+            context['source'] = best_match.get('file_id', 'N/A')  # если хочешь
+        else:
+            context['answer'] = "❌ Ничего не найдено в базе знаний."
+        return context
+
+    return "Задайте вопрос"
+
+
+
 def ask_groq(context, prompt) -> str:
     try:
         chat_completion = client.chat.completions.create(

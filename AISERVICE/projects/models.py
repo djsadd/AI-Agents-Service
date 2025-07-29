@@ -26,3 +26,7 @@ class Integration(models.Model):
 
     def __str__(self):
         return f"{self.integration_type} for {self.project}"
+
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver

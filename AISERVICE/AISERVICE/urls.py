@@ -24,4 +24,6 @@ urlpatterns = [
     path("files/", include("FileProcessing.urls")),
     path("projects/", include("projects.urls")),
     path("", include("llm.urls")),
+    path('webhook/', include('bots.urls')),
+
 ]

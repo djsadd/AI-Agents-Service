@@ -1,16 +1,11 @@
-from django.shortcuts import render
-from .models import Document, Chunk, Embedding
 # Create your views here.
 # views.py
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import View
 from django.contrib import messages
 from django.shortcuts import render
-from services.embeddings.store import get_best_match
 from .models import Document
 from projects.models import Project
-
-from llm.views import ask_groq
 
 
 class DocumentUploadView(View):

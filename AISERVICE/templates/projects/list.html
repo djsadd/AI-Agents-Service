@@ -4,8 +4,13 @@
 
     <p>{{ project.name }} -
         <a href="{% url 'ask-question' project.pk %}">Опробовать!</a>
-        или
-        <a href="{% url 'document_upload' project.pk %}">Загрузить документы</a></p>
+        ,
+        <a href="{% url 'document_upload' project.pk %}">Загрузить документы</a>
+        ,
+        <a href="{% url 'integration_create' pk=project.id type='telegram' %}">Настроить интеграцию с Telegram</a>
+        ,
+        <a href="{% url 'integration_create' pk=project.id type='whatsapp' %}">Настроить интеграцию с WhatsApp</a>
+    </p>
 {% endfor %}
 <a href="{% url 'project_create' %}"><p>Создать новый проект?</p></a>
 

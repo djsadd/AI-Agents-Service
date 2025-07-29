@@ -6,6 +6,11 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.views.generic import ListView
 from .models import Project
+from django.views.generic.edit import CreateView
+from .forms import TelegramIntegrationForm, WhatsAppIntegrationForm
+from .models import Integration
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
 
 
 @method_decorator(login_required, name='dispatch')
@@ -37,3 +42,24 @@ class ProjectsListView(ListView):
 
     def get_queryset(self):
         return Project.objects.filter(owner=self.request.user)
+
+
+class IntegrationCreateView(CreateView):
+    template_name = 'projects/integration_form.html'
+
+    def get_form_class(self):
+        integration_type = self.kwargs.get('type')  # 'telegram' или 'whatsapp'
+        if integration_type == 'telegram':
+            return TelegramIntegrationForm
+        elif integration_type == 'whatsapp':
+            return WhatsAppIntegrationForm
+        else:
+            raise ValueError("Неподдерживаемый тип интеграции")
+
+    def form_valid(self, form):
+        project = get_object_or_404(Project, pk=self.kwargs['pk'])
+        form.instance.project = project
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('project_list')

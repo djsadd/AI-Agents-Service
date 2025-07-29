@@ -1,3 +1,4 @@
+<a href="{% url 'project_list' %}"><h1>Вернуться</h1></a>
 <form method="post">
     {% csrf_token %}
     <input type="text" name="question" placeholder="Enter your question" required size="60">

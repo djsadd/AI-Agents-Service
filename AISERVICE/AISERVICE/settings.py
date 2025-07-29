@@ -29,7 +29,12 @@ SECRET_KEY = 'django-insecure-ant#amd$*y6pt*wnkvvn2iuwqoz+a6rp#z0)cn5q-8d(#ncnjl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*", '"https://8784e0b036d5.ngrok-free.app"']
+
+SERVICE_BASE_URL = "https://8784e0b036d5.ngrok-free.app"
+CSRF_TRUSTED_ORIGINS = [
+    'https://8784e0b036d5.ngrok-free.app',
+]
 
 
 GROQ_API_KEY = env("GROQ_API_KEY")
@@ -49,6 +54,7 @@ INSTALLED_APPS = [
     'logs',
     'projects',
     'users',
+    'bots',
 ]
 INSTALLED_APPS += ["rest_framework"]
 INSTALLED_APPS += ["rest_framework.authtoken"]
