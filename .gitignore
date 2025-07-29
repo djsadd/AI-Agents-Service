@@ -90,4 +90,5 @@ db.sqlite3
 .documents/
 ".idea/"
 AISERVICE/.env
-.idea
+.idea"
+.env"
