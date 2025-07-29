@@ -7,7 +7,7 @@ from groq import Groq
 import os
 from django.conf import settings
 from services.embeddings.store import get_best_match
-
+import requests
 
 client = Groq(api_key=settings.GROQ_API_KEY)
 
@@ -18,7 +18,16 @@ def ask_question_view(request, project_pk):
     if request.method == 'POST':
         question = request.POST.get('question')
         if question:
-            best_match = get_best_match(question, project_pk)
+            # best_match = get_best_match(question, project_pk)
+            api_url = "http://localhost:8001/api/get_best_match/"
+            data = {
+                'question': question,
+                'project_pk': project_pk,
+            }
+            response = requests.post(api_url, data=data)
+            json_data = response.json()
+
+            best_match = json_data.get("result")
 
             if best_match and "text" in best_match:
                 retrieved_context = best_match["text"]
@@ -34,6 +43,7 @@ def ask_question_view(request, project_pk):
                 context['answer'] = "❌ Ничего не найдено в базе знаний."
 
     return render(request, 'fileprocessing/ask.html', context)
+
 
 def ask_groq(context, prompt) -> str:
     try:

@@ -7,7 +7,7 @@ from rest_framework import status
 
 from .processing import process_document
 
-
+from services.embeddings.store import get_best_match
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -35,3 +35,10 @@ class DocumentProcessingView(APIView):
         finally:
             if os.path.exists(temp_path):
                 os.remove(temp_path)  # Удаляем временный файл
+
+
+class GetBestMatchView(APIView):
+    def post(self, request):
+        result = get_best_match(request.POST.get("question"), request.POST.get("project_pk"))
+        print("API")
+        return Response({"status": "ready", "result": result})

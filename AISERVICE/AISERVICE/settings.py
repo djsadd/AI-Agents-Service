@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'llm',
     'logs',
     'projects',
-    'rag',
     'users',
 ]
 INSTALLED_APPS += ["rest_framework"]
