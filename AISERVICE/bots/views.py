@@ -13,7 +13,6 @@ def send_message(token, chat_id, text):
     url = f"https://api.telegram.org/bot{token}/sendMessage"
     data = {"chat_id": chat_id, "text": text}
     response = requests.post(url, json=data)
-    print(f"📤 Send message response: {response.status_code}, {response.text}")
 
 
 @csrf_exempt
@@ -26,8 +25,6 @@ def telegram_webhook(request, token):
     except json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON"}, status=400)
 
-    print(f"📩 Incoming webhook for token: {token}")
-
     # Найти Integration по типу и config["bot_token"]
     integration = Integration.objects.filter(
         integration_type='telegram',
@@ -38,8 +35,6 @@ def telegram_webhook(request, token):
     if not integration:
         return JsonResponse({"error": "Integration not found"}, status=404)
 
-    print(f"✅ Found integration for project: {integration.project.name}")
-
     # (Опционально) Обрабатываем сообщение
     message = payload.get("message", {})
     chat_id = message.get("chat", {}).get("id")
@@ -47,7 +42,6 @@ def telegram_webhook(request, token):
     if text:
         if request.method == 'POST':
             payload = json.loads(request.body)
-            print(f"📩 New update for bot {token}: {payload}")
 
             # Получаем текст сообщения
             message = payload.get("message") or payload.get("edited_message")
@@ -55,9 +49,7 @@ def telegram_webhook(request, token):
                 chat_id = message["chat"]["id"]
                 text = message.get("text", "")
 
-                print(f"👤 Пользователь: {chat_id}")
-                print(f"💬 Вопрос: {text}")
-        answer = ask_question_telegram_view(request, text, integration.project.pk)
-        send_message(token, chat_id, answer["answer"])
+        answer = ask_question_telegram_view(request, text, integration.project.pk, integration.project.system_text)
+        send_message(token, chat_id, answer["answer"] + "\n\n\nКонтекст: " + answer['retrieved_context'])
 
     return JsonResponse({"status": "ok"})

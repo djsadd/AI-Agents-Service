@@ -1,9 +1,4 @@
 # views.py
-import os
-import tempfile
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 
 from .processing import process_document
 

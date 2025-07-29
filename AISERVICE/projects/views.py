@@ -21,15 +21,20 @@ class ProjectCreateView(View):
     def post(self, request):
         name = request.POST.get('name')
         description = request.POST.get('description', '')
+        system_text = request.POST.get('system_text', '')
 
         if not name:
             messages.error(request, "Название проекта обязательно.")
+            return redirect(request.path)
+        if not system_text:
+            messages.error(request, "системный текст")
             return redirect(request.path)
 
         project = Project.objects.create(
             name=name,
             description=description,
-            owner=request.user
+            owner=request.user,
+            system_text=system_text,
         )
 
         messages.success(request, f"Проект «{project.name}» успешно создан.")

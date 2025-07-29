@@ -6,6 +6,8 @@ from django.shortcuts import render
 from groq import Groq
 import os
 from django.conf import settings
+
+from projects.models import Project
 from services.embeddings.store import get_best_match
 import requests
 
@@ -24,6 +26,7 @@ def ask_question_view(request, project_pk):
                 'question': question,
                 'project_pk': project_pk,
             }
+            project = Project.objects.get(pk=project_pk)
             response = requests.post(api_url, data=data)
             json_data = response.json()
 
@@ -32,7 +35,7 @@ def ask_question_view(request, project_pk):
             if best_match and "text" in best_match:
                 retrieved_context = best_match["text"]
                 # ❗ Вот здесь вызывается твоя функция
-                llm_answer = ask_groq(retrieved_context, question)
+                llm_answer = ask_groq(retrieved_context, question, project.system_text)
 
                 context['question'] = question
                 context['answer'] = llm_answer
@@ -45,7 +48,7 @@ def ask_question_view(request, project_pk):
     return render(request, 'fileprocessing/ask.html', context)
 
 
-def ask_question_telegram_view(request, question, project_pk):
+def ask_question_telegram_view(request, question, project_pk, system_text):
     context = {}
     if question:
         # best_match = get_best_match(question, project_pk)
@@ -62,7 +65,7 @@ def ask_question_telegram_view(request, question, project_pk):
         if best_match and "text" in best_match:
             retrieved_context = best_match["text"]
             # ❗ Вот здесь вызывается твоя функция
-            llm_answer = ask_groq(retrieved_context, question)
+            llm_answer = ask_groq(retrieved_context, question, system_text)
 
             context['question'] = question
             context['answer'] = llm_answer
@@ -75,19 +78,13 @@ def ask_question_telegram_view(request, question, project_pk):
     return "Задайте вопрос"
 
 
-
-def ask_groq(context, prompt) -> str:
+def ask_groq(context, prompt, system_text) -> str:
     try:
         chat_completion = client.chat.completions.create(
             messages=[
                 {
                     "role": "system",
-                    "content": '''
-                    Ты — интеллектуальный помощник(ассистент) в приёмной комиссии университета
-                     Туран-Астана. на 2025-2026 уч.год.
-                     Ответь строго на основе приведённого контекста. Если ответа нет, скажи: "Информация отсутствует".
-                     
-                    '''
+                    "content": f"{system_text}"
                 },
                 {
                     "role": "user",

@@ -8,6 +8,7 @@ class Project(models.Model):
     description = models.TextField(blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects')
     created_at = models.DateTimeField(auto_now_add=True)
+    system_text = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name

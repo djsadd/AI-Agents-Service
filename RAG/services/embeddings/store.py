@@ -10,6 +10,7 @@ COLLECTION_NAME = "rag_chunks"
 from .encode import get_embeddings
 from qdrant_client.http import models as rest
 
+
 def get_best_match(question: str, project_id: int):
     vector = get_embeddings([question], mode="query")[0]  # ВАЖНО: берем [0]
 
