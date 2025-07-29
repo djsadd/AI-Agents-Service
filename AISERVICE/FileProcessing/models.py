@@ -32,7 +32,7 @@ class Document(models.Model):
             with open(self.file.path, 'rb') as f:
                 files = {'file': (self.original_filename, f)}
                 data = {
-                    'document_id': self.id,
+                    'file_id': str(self.id),
                     'project_id': self.project.id,
                     'original_filename': self.original_filename,
                 }
@@ -45,7 +45,6 @@ class Document(models.Model):
 
         except Exception as e:
             print(f"❌ Ошибка при попытке отправить файл: {e}")
-
 
 
 class Chunk(models.Model):

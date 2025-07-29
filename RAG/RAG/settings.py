@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DOCUMENT_SERVICE_BASE_URL = ("http://localhost:8000/files")
+
 
 # Application definition
 
