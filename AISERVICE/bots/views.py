@@ -1,8 +1,7 @@
-from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
-from projects.models import Integration, Project
+from projects.models import Integration
 from llm.views import ask_question_telegram_view
 # Create your views here.
 

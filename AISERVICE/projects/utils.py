@@ -19,14 +19,12 @@ def update_telegram_webhook(instance: Integration):
     webhook_url = f"{SERVICE_BASE_URL}/webhook/{bot_token}/"
 
     try:
-        # Проверка текущего вебхука
         check = requests.get(f"https://api.telegram.org/bot{bot_token}/getWebhookInfo", timeout=10)
         current_url = check.json().get("result", {}).get("url", "")
 
         if current_url == webhook_url:
             logger.info(f"✅ Webhook уже установлен: {webhook_url}")
         else:
-            # Установка
             response = requests.post(
                 f"https://api.telegram.org/bot{bot_token}/setWebhook",
                 json={"url": webhook_url},
@@ -39,7 +37,6 @@ def update_telegram_webhook(instance: Integration):
                 logger.error(f"❌ Ошибка установки webhook: {response.status_code} — {response.text}")
                 return
 
-        # Обновляем config
         if instance.config.get('webhook_url') != webhook_url:
             new_config = instance.config.copy()
             new_config['webhook_url'] = webhook_url

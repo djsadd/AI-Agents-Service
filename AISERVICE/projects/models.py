@@ -21,7 +21,7 @@ class Integration(models.Model):
     ]
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="integrations")
     integration_type = models.CharField(max_length=50, choices=INTEGRATION_TYPES)
-    config = models.JSONField(default=dict)  # сюда можно класть токены, ID и т.п.
+    config = models.JSONField(default=dict)
     enabled = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -29,5 +29,3 @@ class Integration(models.Model):
         return f"{self.integration_type} for {self.project}"
 
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver

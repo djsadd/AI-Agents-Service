@@ -17,4 +17,4 @@ router.register(r'embeddings', EmbeddingViewSet)
 urlpatterns = [
     path('upload/<int:project_id>/', DocumentUploadView.as_view(), name='document_upload'),
 ]
-urlpatterns += router.urls  # ← добавляем роутер сюда без обёртки в path('api/')
+urlpatterns += router.urls

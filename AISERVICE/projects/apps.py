@@ -6,6 +6,6 @@ class ProjectsConfig(AppConfig):
     name = 'projects'
 
     def ready(self):
-        import projects.signals  # 👈 ОБЯЗАТЕЛЬНО!
+        import projects.signals
 
 

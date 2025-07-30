@@ -1,7 +1,7 @@
 from django.db import models
 from projects.models import Project
 from django.contrib.postgres.fields import ArrayField
-
+from django.conf import settings
 
 # Create your models here.
 import requests
@@ -26,7 +26,7 @@ class Document(models.Model):
         return self.original_filename
 
     def process(self):
-        api_url = "http://localhost:8001/api/process_document/"
+        api_url = settings.RAG_API_URL
 
         try:
             with open(self.file.path, 'rb') as f:

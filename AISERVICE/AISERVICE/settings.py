@@ -31,7 +31,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*", '"https://8784e0b036d5.ngrok-free.app"']
 
-SERVICE_BASE_URL = "https://8784e0b036d5.ngrok-free.app"
+SERVICE_BASE_URL = env("SERVICE_BASE_URL")
+RAG_API_URL = env("RAG_API_URL")
 CSRF_TRUSTED_ORIGINS = [
     'https://8784e0b036d5.ngrok-free.app',
 ]
@@ -107,7 +108,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'aiservice',
-        'USER': 'postgres',
+        'USER': env("DB_USER"),
         'PASSWORD': env("DB_PASSWORD"),
         'HOST': 'localhost',
         'PORT': env("DB_PORT"),

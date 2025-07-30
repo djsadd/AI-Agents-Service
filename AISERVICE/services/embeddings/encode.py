@@ -2,6 +2,7 @@ from .model import model
 from typing import List
 from typing import List, Literal
 
+
 def get_embeddings(texts: List[str], mode: Literal["query", "passage"] = "passage") -> List[List[float]]:
     """
     Возвращает список эмбеддингов для списка текстов через локальную модель e5-small-v2.
